@@ -1,17 +1,38 @@
-
-import MyButton from "./button";
+import React, { useState } from 'react';
+import axios from 'axios';
 
 function App() {
+  const [message, setMessage] = useState('');
+  const [botReply, setBotReply] = useState('');
+
+  const handleChat = async () => {
+    try {
+      const response = await axios.post('http://localhost:3001/chat', {
+        message
+      });
+
+      setBotReply(response.data.reply);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  
   return (
-    <div className="App">
-      <header className="App-header">
-    
-        <p>
-          This is my webpage 
-        </p>
-        <MyButton></MyButton>
-      </header>
+    <div>
+    <div class="maincontainer" >
+      <h1>Chat Bot</h1>
+      <div class="maincontainer">
+        <input
+          type="text"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+        />
+        <button onClick={handleChat}>Send</button>
+      </div>
+      <p>{botReply}</p>
     </div>
+</div>
   );
 }
 
